@@ -1,4 +1,5 @@
 language: go
+dist: trusty
 go:
 - 1.9.x
 os: linux
@@ -10,26 +11,30 @@ env:
   - GH_URL=https://sdminonne.github.io/workflow-controller
   - secure: dmr0+m9v0Z7NF5gdhTD3ypLyEgZNwn+DZ8xweccNMei5boQaTqga2xTLBytZGzGmWFXuE7c15ettB34G7vg58D9CVoNuogF0M6/mkwKXWONyNKpOszl0HR+StAPNf+dIpAWTiob65vf2JjkJT7MXz4TxywHLgki70w6QByuI13oSweMc1EzrmAV+m7OxaMzDvjk8VBderhxHF8bTbCSnkvJt3IbRERFRcxU3pPZMUz/Dr2fuywHXujoKr2Iriprq7IMnneN1MKQya8zsTIpo3bBUaC13GAc4mcKC1ZWwBikgCEQtcrbWFFlaGRH2WuS6gbh2k3p3Z03/I1lAwUMX7/e6FWkHZn5mgZI4Q3zg12MrZVH7wfMU97RFv+4QPe3TlaFrazbnz9eMNgo/CYMFU8lfERGVT0mo6stJtP+vfWW4RiBJYJX9PKUWD3oPzhIBmvOCJfn7ZimstIWF+A3fJeZtlRK8gQ6sR3R8Dw08isHW3UVE8bvf6UHpAdZbXB8WtrK9n2Xh+xt25WSGsP0y/uiml3qwtCWsxt2m0wxOg3dOwhnPMZr1wZS6Ib9WqpM9+7LZunVU76b2xIz0bvaB9TPD8APKzI0F9xEtrOe4ak4J/DXDWm68Q5gI/8Nxtp003gDN8rAFUCpaTlkhfVFrxtUiAREgzE9bHcmjpUHDXeI=
 install:
-- curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
-script:
-- CGO_ENABLED=0 GOOS=linux go build -i -installsuffix cgo -ldflags "-w" -o main .
-- docker build -t cedriclam/helm-test:$TAG .
-- docker images
-- echo $TRAVIS_TAG
-after_success:
-- |
-  if [ $TRAVIS_BRANCH = 'master' ] && [ $TRAVIS_PULL_REQUEST = 'false' ]; then
-    sed -i.bak "4s/.*/version: ${TAG}/" helm-test/Chart.yaml
-    #docker push cedriclam/helm-test:$TAG
-    helm package --version "$TAG" helm-test
-    mv "helm-test-$TAG.tgz" docs
-    helm repo index docs --merge docs/index.yaml
-  fi
-deploy:
-  provider: releases
-  api_key: $API_TOKEN
-  file:
-  - docs/helm-test-$TAG.tgz
-  skip_cleanup: true
-  on:
-    tags: true
+  - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+jobs:
+  include:
+    - stage: Build
+      script:
+        - CGO_ENABLED=0 GOOS=linux go build -i -installsuffix cgo -ldflags "-w" -o main .
+        - docker build -t cedriclam/helm-test:$TAG .
+        - docker images
+        - echo $TRAVIS_TAG
+    - stage: Release generation
+      if: (branch = master) AND (type NOT pull_request) AND (fork IS false)
+      script: |
+        sed -i.bak "4s/.*/version: ${TAG}/" helm-test/Chart.yaml
+        #docker push cedriclam/helm-test:$TAG
+        helm package --version "$TAG" helm-test
+        mv "helm-test-$TAG.tgz" docs
+        helm repo index docs --merge docs/index.yaml
+    - stage: GitHub releases
+      script: echo "Deploying to GitHub releases ..."
+      deploy:
+        provider: releases
+        api_key: $API_TOKEN
+        file:
+          - docs/helm-test-$TAG.tgz
+        skip_cleanup: true
+        on:
+          tags: true
