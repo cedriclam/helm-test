@@ -1,0 +1,27 @@
+language: go
+go:
+  - 1.9.x
+os: linux
+#sudo: required
+services:
+  - docker
+env:
+  global:
+    - TAG=${TRAVIS_TAG:=${TRAVIS_COMMIT}}
+    - GH_URL=https://sdminonne.github.io/workflow-controller
+install:
+  - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+
+script:
+  - CGO_ENABLED=0 GOOS=linux go build -i -installsuffix cgo -ldflags "-w" -o main .
+  - docker build -t cedriclam/helm-test:$TAG .
+  - docker images
+after_success:
+  - >
+    if [ $TRAVIS_BRANCH = 'master' ] && [ $TRAVIS_PULL_REQUEST = 'false' ]; then
+      sed -i.bak "4s/.*/version: ${TAG}/" helm-test/Chart.yaml
+      #docker push cedriclam/helm-test:$TAG
+      helm package --version "$TAG" helm-test
+      mv "helm-test-$TAG.tgz" docs
+      helm repo index docs --merge docs/index.yaml
+    fi

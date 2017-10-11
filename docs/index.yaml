@@ -1,0 +1,20 @@
+apiVersion: v1
+entries:
+  helm-test:
+  - apiVersion: v1
+    created: 2017-10-11T22:37:06.351746226+02:00
+    description: A Helm chart for Kubernetes
+    digest: 9c8302d42c5f2eb0bea36892e1c88c832fb91b70d53d5ae4ae41fa407a08b118
+    name: helm-test
+    urls:
+    - helm-test-0.0.2-test.tgz
+    version: 0.0.2-test
+  - apiVersion: v1
+    created: 2017-10-11T22:37:06.351517077+02:00
+    description: A Helm chart for Kubernetes
+    digest: 9563d5f7aefb25b9db94170b066df4bb4dde0cdfe12ecddb5486b3a1772a2c7e
+    name: helm-test
+    urls:
+    - helm-test-0.0.1-test.tgz
+    version: 0.0.1-test
+generated: 2017-10-11T22:37:06.35091512+02:00
