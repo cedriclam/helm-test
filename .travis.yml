@@ -41,4 +41,3 @@ jobs:
           file: "docs/helm-test-$TAG.tgz"
           on:
             tags: true
-            branch: master
