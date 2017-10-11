@@ -21,11 +21,11 @@ stages:
 jobs:
   include:
     - stage: build
+      name: build
       script:
         - CGO_ENABLED=0 GOOS=linux go build -i -installsuffix cgo -ldflags "-w" -o main .
         - docker build -t cedriclam/helm-test:$TAG .
     - stage: release
-      if: branch = master AND tag IS present
       script: |
           sed -i.bak "4s/.*/version: ${TAG}/" helm-test/Chart.yaml
           #docker push cedriclam/helm-test:$TAG
@@ -33,7 +33,7 @@ jobs:
           mv "helm-test-$TAG.tgz" docs
           helm repo index docs --merge docs/index.yaml
     - stage: deploy
-      if: branch = master AND tag IS present
+      script: "echo deploy"
       deploy:
         - provider: releases
           api_key:
