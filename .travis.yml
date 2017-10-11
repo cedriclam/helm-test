@@ -18,18 +18,17 @@ jobs:
       script:
         - CGO_ENABLED=0 GOOS=linux go build -i -installsuffix cgo -ldflags "-w" -o main .
         - docker build -t cedriclam/helm-test:$TAG .
-        - docker images
-        - echo $TRAVIS_TAG
-    - stage: Release generation
-      if: (branch = master) AND (type NOT pull_request) AND (fork IS false)
+    - if: (branch = master) AND (type NOT pull_request) AND (fork IS false)
+      name: Release generation
       script: |
-        sed -i.bak "4s/.*/version: ${TAG}/" helm-test/Chart.yaml
-        #docker push cedriclam/helm-test:$TAG
-        helm package --version "$TAG" helm-test
-        mv "helm-test-$TAG.tgz" docs
-        helm repo index docs --merge docs/index.yaml
+          sed -i.bak "4s/.*/version: ${TAG}/" helm-test/Chart.yaml
+          #docker push cedriclam/helm-test:$TAG
+          helm package --version "$TAG" helm-test
+          mv "helm-test-$TAG.tgz" docs
+          helm repo index docs --merge docs/index.yaml
     - stage: GitHub releases
       script: echo "Deploying to GitHub releases ..."
+      if: (branch = master) AND (type NOT pull_request) AND (fork IS false)
       deploy:
         provider: releases
         api_key: $API_TOKEN
@@ -38,3 +37,4 @@ jobs:
         skip_cleanup: true
         on:
           tags: true
+          branch: master
