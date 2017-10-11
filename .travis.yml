@@ -16,8 +16,6 @@ stages:
   - name: build
   - name: release
     if: tag IS present
-  - name: deploy
-    if: tag IS present
 jobs:
   include:
     - stage: build
@@ -30,14 +28,15 @@ jobs:
           sed -i.bak "4s/.*/version: ${TAG}/" helm-test/Chart.yaml
           #docker push cedriclam/helm-test:$TAG
           helm package --version "$TAG" helm-test
-          mv "helm-test-$TAG.tgz" docs
+          mv "helm-test-$TAG.tgz" docs/
+          tree .
           helm repo index docs --merge docs/index.yaml
-    - stage: deploy
-      script: "echo deploy"
       deploy:
         - provider: releases
           api_key:
             secure: $API_TOKEN
-          file: "docs/helm-test-$TAG.tgz"
+          file: "./docs/helm-test-$TAG.tgz"
           on:
             tags: true
+
+      
