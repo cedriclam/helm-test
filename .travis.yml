@@ -29,13 +29,12 @@ jobs:
           #docker push cedriclam/helm-test:$TAG
           helm package --version "$TAG" helm-test
           mv "helm-test-$TAG.tgz" docs/
-          tree .
           helm repo index docs --merge docs/index.yaml
+          git commit -am  "Release v$TAG"
       deploy:
         - provider: releases
           api_key:
             secure: $API_TOKEN
-          file: "./docs/helm-test-$TAG.tgz"
           on:
             tags: true
 
