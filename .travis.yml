@@ -32,7 +32,8 @@ jobs:
           helm repo index docs --url https://cedriclam.github.io/helm-test/
       deploy:
         - provider: pages
-          local_dir: "docs"
+          #local_dir: "docs"
+          target_branch: master
           skip_cleanup: true
           github_token: $API_TOKEN
           on:
