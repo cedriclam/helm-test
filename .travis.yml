@@ -30,9 +30,6 @@ jobs:
           helm package --version "$TAG" helm-test
           mv "helm-test-$TAG.tgz" docs/
           helm repo index docs --url https://cedriclam.github.io/helm-test/
-          git add --all .
-          git commit -am "Release $TAG"
-          git push origin master
       deploy:
         - provider: pages
           local_dir: "docs"
