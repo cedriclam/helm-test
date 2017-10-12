@@ -2,7 +2,15 @@ apiVersion: v1
 entries:
   helm-test:
   - apiVersion: v1
-    created: 2017-10-12T15:08:00.502049043+02:00
+    created: 2017-10-12T15:20:41.779427128+02:00
+    description: A Helm chart for Kubernetes
+    digest: ba2367db43fd991606f8280591305f3aa678923ef2be88c1754385b834524c14
+    name: helm-test
+    urls:
+    - https://cedriclam.github.io/helm-test/helm-test-v1.0.4.tgz
+    version: v1.0.4
+  - apiVersion: v1
+    created: 2017-10-12T15:20:41.77910685+02:00
     description: A Helm chart for Kubernetes
     digest: da3dc1ebd9ca86d89db05a7a5fe566df80e784d401d0753314a32d1a4ce0aeef
     name: helm-test
@@ -10,11 +18,11 @@ entries:
     - https://cedriclam.github.io/helm-test/helm-test-v1.0.3.tgz
     version: v1.0.3
   - apiVersion: v1
-    created: 2017-10-12T15:08:00.501685339+02:00
+    created: 2017-10-12T15:20:41.778531933+02:00
     description: A Helm chart for Kubernetes
     digest: 3ea126dd0f5561e4c0ee3787a45a9079eda994c2c364192145831e441fabee96
     name: helm-test
     urls:
     - https://cedriclam.github.io/helm-test/helm-test-v1.0.0.tgz
     version: v1.0.0
-generated: 2017-10-12T15:08:00.500451945+02:00
+generated: 2017-10-12T15:20:41.777840769+02:00
