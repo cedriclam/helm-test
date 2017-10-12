@@ -30,12 +30,17 @@ jobs:
           helm package --version "$TAG" helm-test
           mv "helm-test-$TAG.tgz" docs/
           helm repo index docs --merge docs/index.yaml
-          git commit -am  "Release v$TAG"
+          git add docs/helm-test-$TAG.tgz
+          git add --all
       deploy:
         - provider: releases
           api_key:
             secure: $API_TOKEN
           on:
             tags: true
+            branches:
+              only:
+                - master
+                - /^v\d+(\.\d+)+$/
 
       
