@@ -29,18 +29,25 @@ jobs:
           #docker push cedriclam/helm-test:$TAG
           helm package --version "$TAG" helm-test
           mv "helm-test-$TAG.tgz" docs/
-          helm repo index docs --merge docs/index.yaml
+          helm repo index docs --url https://cedriclam.github.io/helm-test/
           git add docs/helm-test-$TAG.tgz
           git add --all
       deploy:
+        - provider: pages
+          skip_cleanup: true
+          github_token: $API_TOKEN
+          on:
+            tags: true
+            branches:
+              only:
+                - master
+                - /^v\d+(\.\d+)+$/
         - provider: releases
           api_key:
             secure: $API_TOKEN
           skip_cleanup: true
           file:
             - "docs/helm-test-$TAG.tgz"
-            - "docs/index.yaml"
-            - "helm-test/Chart.yaml"
           on:
             tags: true
             branches:
