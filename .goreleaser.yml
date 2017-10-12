@@ -1,0 +1,40 @@
+project_name: helm-test
+release:
+  github:
+    owner: cedriclam
+    name: helm-test
+builds:
+- goos:
+  - linux
+  goarch:
+  - amd64
+  - "386"
+  main: .
+  ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+  binary: helm-test
+  hooks:
+      pre: ./scripts/helm-release.sh {{.Version}}
+dockers:
+  - image: cedriclam/helm-test
+    goos: linux
+    goarch: amd64
+    goarm: ''
+    binary: helm-test
+    latest: true
+archive:
+  format: tar.gz
+  name_template: '{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{
+    .Arm }}{{ end }}'
+  files:
+  - licence*
+  - LICENCE*
+  - license*
+  - LICENSE*
+  - readme*
+  - README*
+  - changelog*
+  - CHANGELOG*
+snapshot:
+  name_template: SNAPSHOT-{{ .Commit }}
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'

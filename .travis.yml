@@ -25,23 +25,8 @@ jobs:
         - docker build -t cedriclam/helm-test:$TAG .
     - stage: release
       script: |
-          sed -i.bak "4s/.*/version: ${TAG}/" helm-test/Chart.yaml
-          #docker push cedriclam/helm-test:$TAG
-          helm package --version "$TAG" helm-test
-          mv "helm-test-$TAG.tgz" docs/
-          helm repo index docs --url https://cedriclam.github.io/helm-test/
+          curl -sL https://git.io/goreleaser | bash
       deploy:
-        - provider: pages
-          #local_dir: "docs"
-          target_branch: master
-          skip_cleanup: true
-          github_token: $API_TOKEN
-          on:
-            tags: true
-            branches:
-              only:
-                - master
-                - /^v\d+(\.\d+)+$/
         - provider: releases
           api_key:
             secure: $API_TOKEN

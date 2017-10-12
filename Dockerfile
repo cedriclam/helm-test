@@ -1,4 +1,4 @@
-FROM alpine
+FROM scratch
 
-ADD main /main
-ENTRYPOINT /main
+COPY helm-test /
+ENTRYPOINT ["/helm-test"]
