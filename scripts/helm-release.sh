@@ -1,9 +1,12 @@
 #!/bin/bash
 
-helm package --version "$TAG" charts/helm-test
-mv "helm-test-$TAG.tgz" docs/
+if [ -z "$1" ]; then
+    echo "please provide the version as parameter: ./helm-release.sh <version>\n"
+    exit 1
+fi
+
+helm package --version "$1" charts/helm-test
+mv "helm-test-$1.tgz" docs/
 helm repo index docs --url https://cedriclam.github.io/helm-test/
-git add --all .
-git commit -am "release $TAG"
-git tag -f $TAG
-git push -f --tags origin master
+git add --all docs/
+
