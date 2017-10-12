@@ -21,7 +21,7 @@ jobs:
     - stage: build
       name: build
       script:
-        - CGO_ENABLED=0 GOOS=linux go build -i -installsuffix cgo -ldflags "-w" -o main .
+        - CGO_ENABLED=0 GOOS=linux go build -i -installsuffix cgo -ldflags "-w" -o helm-test .
         - docker build -t cedriclam/helm-test:$TAG .
     - stage: release
       script: |
