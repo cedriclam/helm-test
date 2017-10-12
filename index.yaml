@@ -1,0 +1,12 @@
+apiVersion: v1
+entries:
+  helm-test:
+  - apiVersion: v1
+    created: 2017-10-12T01:04:41.506906655Z
+    description: A Helm chart for Kubernetes
+    digest: 38bd3ae7ad68e77c5d6ce52340436d1985b3cb63cfb45427fda980f5e854187a
+    name: helm-test
+    urls:
+    - https://cedriclam.github.io/helm-test/helm-test-v0.0.5.tgz
+    version: v0.0.5
+generated: 2017-10-12T01:04:41.506571597Z
