@@ -13,6 +13,9 @@
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
 
-/main
-/helm-test/Chart.yaml.bak
+# tmp sed file
+*.bak
+
+# Generated file
+/helm-test
 /dist

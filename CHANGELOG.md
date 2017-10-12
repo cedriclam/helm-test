@@ -1,10 +1,10 @@
 # CHANGELOG
 
-# Next release
+## Next release
 
 - sdsd
 - ssdfsdf 
 
-# Release v0.0.1
+## Release v0.0.1
 
 - sddsdsdsfsfsdfsd

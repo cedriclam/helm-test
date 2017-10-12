@@ -12,8 +12,6 @@ builds:
   main: .
   ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
   binary: helm-test
-  hooks:
-      pre: ./scripts/helm-release.sh $TAG
 dockers:
   - image: cedriclam/helm-test
     goos: linux
@@ -21,19 +19,6 @@ dockers:
     goarm: ''
     binary: helm-test
     latest: true
-archive:
-  format: tar.gz
-  name_template: '{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{
-    .Arm }}{{ end }}'
-  files:
-  - licence*
-  - LICENCE*
-  - license*
-  - LICENSE*
-  - readme*
-  - README*
-  - changelog*
-  - CHANGELOG*
 snapshot:
   name_template: SNAPSHOT-{{ .Commit }}
 checksum:
