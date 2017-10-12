@@ -36,6 +36,11 @@ jobs:
         - provider: releases
           api_key:
             secure: $API_TOKEN
+          skip_cleanup: true
+          file:
+            - "docs/helm-test-$TAG.tgz"
+            - "docs/index.yaml"
+            - "helm-test/Chart.yaml"
           on:
             tags: true
             branches:
